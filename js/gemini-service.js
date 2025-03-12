@@ -17,7 +17,7 @@ async function processWithGemini(content, isImage = false) {
   }
   
   const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
-  const apiUrlVision = 'https://generativelanguage.googleapis.com/v1/models/gemini-pro-vision:generateContent';
+  const apiUrlVision = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
   
   let requestBody;
   let url;
