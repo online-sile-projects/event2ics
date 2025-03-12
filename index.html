@@ -99,6 +99,8 @@
             } else {
                 apiKeyStatus.textContent = 'API Key not set';
                 apiKeyStatus.className = 'status-error';
+                // Show the settings modal immediately if API key is not set
+                settingsModal.classList.remove('hidden');
             }
             
             // Open settings modal
