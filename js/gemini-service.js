@@ -16,7 +16,7 @@ async function processWithGemini(content, isImage = false) {
     throw new Error('Gemini API key is not set. Please set it in the settings.');
   }
   
-  const apiUrl = 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent';
+  const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
   const apiUrlVision = 'https://generativelanguage.googleapis.com/v1/models/gemini-pro-vision:generateContent';
   
   let requestBody;
