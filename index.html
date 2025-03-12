@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event2ICS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4285f4">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+</head>
+<body>
+    <header>
+        <h1>Event2ICS</h1>
+    </header>
+
+    <main>
+        <div id="input-container">
+            <div id="content-display">
+                <p id="placeholder-text">Shared content will appear here</p>
+                <div id="text-content" class="hidden"></div>
+                <div id="image-content" class="hidden">
+                    <img id="shared-image" alt="Shared image">
+                </div>
+            </div>
+
+            <div id="manual-input" class="hidden">
+                <textarea id="text-input" placeholder="Or paste your event text here"></textarea>
+                <input type="file" id="image-input" accept="image/*">
+            </div>
+
+            <button id="process-btn">Process with Gemini</button>
+        </div>
+
+        <div id="result-container" class="hidden">
+            <h2>Event Details</h2>
+            <div id="event-details"></div>
+            <button id="download-ics">Download ICS</button>
+            <button id="new-event">Process New Event</button>
+        </div>
+
+        <div id="loading" class="hidden">
+            <div class="spinner"></div>
+            <p>Processing with Gemini...</p>
+        </div>
+    </main>
+
+    <script src="js/ics-generator.js"></script>
+    <script src="js/gemini-service.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Register service worker - force new registration each time
+        if ('serviceWorker' in navigator) {
+            // First unregister any existing service workers
+            navigator.serviceWorker.getRegistrations().then(registrations => {
+                registrations.forEach(registration => {
+                    registration.unregister(); // Unregister existing service workers
+                });
+                
+                // After unregistering, register the new service worker
+                return navigator.serviceWorker.register('service-worker.js');
+            })
+            .then(reg => console.log('Service worker registered'))
+            .catch(err => console.log('Service worker registration failed', err));
+        }
+    </script>
+</body>
+</html>
