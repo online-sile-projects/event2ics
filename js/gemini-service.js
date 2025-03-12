@@ -1,6 +1,7 @@
-// API key would typically be secured in a server environment
-// For demo purposes, we'll assume it's loaded from an environment variable or config
-const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY'; 
+// Get API key from localStorage instead of hardcoding
+function getGeminiApiKey() {
+  return localStorage.getItem('geminiApiKey') || '';
+}
 
 /**
  * Process content with Google Gemini API
@@ -9,6 +10,12 @@ const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY';
  * @returns {Promise<Object>} - Parsed event data
  */
 async function processWithGemini(content, isImage = false) {
+  const apiKey = getGeminiApiKey();
+  
+  if (!apiKey) {
+    throw new Error('Gemini API key is not set. Please set it in the settings.');
+  }
+  
   const apiUrl = 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent';
   const apiUrlVision = 'https://generativelanguage.googleapis.com/v1/models/gemini-pro-vision:generateContent';
   
@@ -17,7 +24,7 @@ async function processWithGemini(content, isImage = false) {
   
   if (isImage) {
     // For image processing
-    url = `${apiUrlVision}?key=${GEMINI_API_KEY}`;
+    url = `${apiUrlVision}?key=${apiKey}`;
     
     // Extract base64 data from data URL
     const base64Data = content.split(',')[1];
@@ -39,7 +46,7 @@ async function processWithGemini(content, isImage = false) {
     };
   } else {
     // For text processing
-    url = `${apiUrl}?key=${GEMINI_API_KEY}`;
+    url = `${apiUrl}?key=${apiKey}`;
     
     requestBody = {
       contents: [{

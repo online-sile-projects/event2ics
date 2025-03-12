@@ -16,7 +16,21 @@
 <body>
     <header>
         <h1>Event2ICS</h1>
+        <button id="settings-btn" class="icon-button">⚙️</button>
     </header>
+
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Settings</h2>
+            <div class="form-group">
+                <label for="api-key">Gemini API Key:</label>
+                <input type="password" id="api-key" placeholder="Enter your Gemini API key">
+                <button id="save-api-key">Save</button>
+            </div>
+            <div id="api-key-status"></div>
+        </div>
+    </div>
 
     <main>
         <div id="input-container">
@@ -67,6 +81,52 @@
             .then(reg => console.log('Service worker registered'))
             .catch(err => console.log('Service worker registration failed', err));
         }
+
+        // API key management
+        document.addEventListener('DOMContentLoaded', function() {
+            const settingsBtn = document.getElementById('settings-btn');
+            const settingsModal = document.getElementById('settings-modal');
+            const closeBtn = document.querySelector('.close-btn');
+            const saveApiKeyBtn = document.getElementById('save-api-key');
+            const apiKeyInput = document.getElementById('api-key');
+            const apiKeyStatus = document.getElementById('api-key-status');
+            
+            // Check if API key exists
+            if (localStorage.getItem('geminiApiKey')) {
+                apiKeyStatus.textContent = 'API Key is set';
+                apiKeyStatus.className = 'status-success';
+                apiKeyInput.value = '••••••••••••••••'; // Placeholder for security
+            } else {
+                apiKeyStatus.textContent = 'API Key not set';
+                apiKeyStatus.className = 'status-error';
+            }
+            
+            // Open settings modal
+            settingsBtn.addEventListener('click', function() {
+                settingsModal.classList.remove('hidden');
+            });
+            
+            // Close settings modal
+            closeBtn.addEventListener('click', function() {
+                settingsModal.classList.add('hidden');
+            });
+            
+            // Save API key
+            saveApiKeyBtn.addEventListener('click', function() {
+                const apiKey = apiKeyInput.value.trim();
+                if (apiKey) {
+                    localStorage.setItem('geminiApiKey', apiKey);
+                    apiKeyStatus.textContent = 'API Key saved successfully';
+                    apiKeyStatus.className = 'status-success';
+                    setTimeout(() => {
+                        settingsModal.classList.add('hidden');
+                    }, 1500);
+                } else {
+                    apiKeyStatus.textContent = 'Please enter a valid API Key';
+                    apiKeyStatus.className = 'status-error';
+                }
+            });
+        });
     </script>
 </body>
 </html>
