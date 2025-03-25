@@ -1,3 +1,12 @@
 User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+
+# Sitemap 設定
 Sitemap: https://event2ics.com/articles/sitemap.xml
 Sitemap: https://event2ics.com/sitemap.xml
+
+# 爬蟲速率限制
+Crawl-delay: 10
