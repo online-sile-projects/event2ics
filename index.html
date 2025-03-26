@@ -3,50 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event2ICS - 訊息轉行事曆</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="styles.css">
-    <!-- PWA 相關 icon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="images/icons_favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/icons_favicon-16x16.png">
-    <link rel="apple-touch-icon" href="images/icons_apple-touch-icon.png">
+    <title>Event2ICS - 事件轉換工具</title>
+    <meta name="description" content="將文字訊息或圖片轉換成日曆檔案的 PWA 應用程式">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/icons_favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/icons_favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/images/icons_apple-touch-icon.png">
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="manifest" href="/manifest.json">
 </head>
-<body>
-    <header>
-        <h1>訊息轉行事曆</h1>
-        <p class="subtitle">將文字或圖片轉換成行事曆事件</p>
-    </header>
+<body class="bg-gray-100">
+    <div x-data="app" class="container mx-auto px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Event2ICS</h1>
+            <p class="text-gray-600">將文字或圖片轉換成日曆檔案</p>
+        </header>
 
-    <main>
-        <div id="instructions" class="center-container">
-            <div class="instruction-box">
-                <h2>使用方式</h2>
-                <ol>
-                    <li>複製想要轉換的文字或圖片</li>
-                    <li>使用分享功能分享到本應用</li>
-                    <li>點擊轉換按鈕</li>
-                    <li>下載或直接加入行事曆</li>
-                </ol>
+        <main class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+            <div class="space-y-4">
+                <div x-show="!fileContent && !textContent" class="text-center">
+                    <p class="text-gray-500 mb-4">請分享文字或圖片到此應用</p>
+                    <button 
+                        @click="openFilePicker"
+                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                        選擇檔案
+                    </button>
+                </div>
+
+                <div x-show="fileContent || textContent" class="space-y-4">
+                    <div x-show="fileContent" class="border rounded p-4">
+                        <img :src="fileContent" class="max-w-full h-auto">
+                    </div>
+                    <div x-show="textContent" class="border rounded p-4">
+                        <p x-text="textContent || ''"></p>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <button 
+                            @click="processContent"
+                            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+                            轉換成日曆
+                        </button>
+                        <button 
+                            @click="clearContent"
+                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+                            清除
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
+        </main>
+    </div>
 
-        <div id="content-preview" class="hidden">
-            <div id="shared-content"></div>
-            <div id="event-preview" class="hidden">
-                <h3>事件預覽</h3>
-                <div id="event-details"></div>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <div class="button-container">
-            <button id="convert-btn" class="primary-btn">轉換</button>
-            <button id="download-btn" class="secondary-btn hidden">下載 ICS</button>
-            <button id="add-calendar-btn" class="secondary-btn hidden">加入行事曆</button>
-        </div>
-    </footer>
-
-    <script src="app.js" type="module"></script>
+    <input type="file" 
+           id="filePicker" 
+           accept="image/*,text/plain" 
+           class="hidden"
+           @change="handleFileSelect">
 </body>
 </html>
