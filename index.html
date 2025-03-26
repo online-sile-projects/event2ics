@@ -3,107 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>訊息分享顯示器</title>
-    <link rel="stylesheet" href="css/styles.css">
-    
-    <!-- PWA 相關設定 -->
+    <title>文字圖片轉行事曆</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#000000">
-    <link rel="apple-touch-icon" href="images/icons_apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/icons_favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/icons_favicon-16x16.png">
-    
-    <!-- iOS 支援 -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-    <div id="app">
-        <header>
-            <h1>訊息分享顯示器</h1>
-            <p>從其他應用程式分享內容到這裡?</p>
-        </header>
-        <main>
-            <div id="api-key-section">
-                <h2>設定</h2>
-                <div class="input-group">
-                    <label for="gemini-api-key">Gemini API Key:</label>
-                    <input type="password" id="gemini-api-key" placeholder="請輸入您的 Gemini API Key">
-                    <button id="save-api-key" class="button">儲存 API Key</button>
-                </div>
-            </div>
-            <div id="content-display"></div>
-            <div id="content-editor"></div>
-            <div id="action-buttons">
-                <button id="process-content" class="button">轉換成行事曆</button>
-            </div>
-        </main>
+    <div class="container">
+        <div class="button-container">
+            <button id="convert-to-ics" class="primary-button">轉換成行事曆檔案</button>
+        </div>
+        <div id="content-display">
+            <div id="text-content"></div>
+            <img id="image-content" style="display: none; max-width: 100%;">
+        </div>
+        
     </div>
-
-    <script type="module">
-        // 註冊 Service Worker
+    <script src="js/app.js"></script>
+    <script>
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
-                    .then(registration => {
-                        console.log('ServiceWorker 註冊成功:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('ServiceWorker 註冊失敗:', error);
-                    });
-            });
+            navigator.serviceWorker.register('/service-worker.js');
         }
-
-        // 初始化應用程式
-        import { EventProcessor } from './js/services/EventProcessor.js';
-        import { ContentDisplay } from './js/services/ContentDisplay.js';
-        import { ContentEditor } from './js/services/ContentEditor.js';
-        import GeminiService from './js/services/GeminiService.js';
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const eventProcessor = new EventProcessor();
-            const contentDisplay = new ContentDisplay();
-            const contentEditor = new ContentEditor();
-            const geminiService = new GeminiService();
-
-            // 從 localStorage 讀取並設置已保存的 API key
-            const savedApiKey = localStorage.getItem('gemini_api_key');
-            if (savedApiKey) {
-                document.getElementById('gemini-api-key').value = savedApiKey;
-            }
-
-            // 監聽 API key 保存按鈕
-            document.getElementById('save-api-key').addEventListener('click', () => {
-                const apiKey = document.getElementById('gemini-api-key').value;
-                geminiService.setApiKey(apiKey);
-                alert('API Key 已成功儲存！');
-            });
-
-            // 監聽編輯後的內容變更
-            window.addEventListener('content-edited', (event) => {
-                contentDisplay.displayContent(event.detail);
-            });
-
-            // 監聽轉換按鈕點擊事件
-            document.getElementById('process-content').addEventListener('click', async () => {
-                const textContent = document.querySelector('.editor-textarea').value;
-                if (!textContent) {
-                    alert('請先輸入或分享要轉換的內容！');
-                    return;
-                }
-
-                try {
-                    const result = await eventProcessor.processAndDownload(textContent);
-                    if (result.success) {
-                        alert(result.message);
-                    } else {
-                        alert(result.message);
-                    }
-                } catch (error) {
-                    alert('轉換過程發生錯誤，請確認您已設定 API Key 且輸入內容正確。');
-                }
-            });
-        });
     </script>
 </body>
 </html>

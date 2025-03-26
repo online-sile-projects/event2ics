@@ -1,11 +1,6 @@
 const CACHE_NAME = 'message-display-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/css/styles.css',
-  '/js/services/EventProcessor.js',
-  '/js/services/ContentDisplay.js',
-  '/js/services/ContentEditor.js'
+  '/'
 ];
 const isDevelopment = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 
