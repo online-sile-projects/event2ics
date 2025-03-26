@@ -1,5 +1,9 @@
+import GeminiService from './GeminiService.js';
+import ICSDownloader from './ICSDownloader.js';
+
 export class EventProcessor {
     constructor() {
+        this.geminiService = new GeminiService();
         this.registerShareTarget();
     }
 
@@ -28,6 +32,27 @@ export class EventProcessor {
         window.dispatchEvent(event);
     }
 
+    async processAndDownload(eventText) {
+        try {
+            // 使用 Gemini API 轉換成 ICS 格式
+            const icsContent = await this.geminiService.convertToICS(eventText);
+            
+            // 下載 ICS 檔案
+            ICSDownloader.downloadICSFile(icsContent);
+            
+            return {
+                success: true,
+                message: '已成功轉換並下載 ICS 檔案'
+            };
+        } catch (error) {
+            console.error('處理事件時發生錯誤:', error);
+            return {
+                success: false,
+                message: `處理失敗: ${error.message}`
+            };
+        }
+    }
+
     // 處理文字內容
     static processTextContent(text) {
         return text.trim();
@@ -43,3 +68,5 @@ export class EventProcessor {
         });
     }
 }
+
+export default EventProcessor;
