@@ -138,11 +138,11 @@ function setupUIEventHandlers() {
   if (saveApiSettingsButton) {
     saveApiSettingsButton.addEventListener('click', () => {
       const apiKey = document.getElementById('api-key-input').value;
-      const systemInstruction = document.getElementById('system-instruction').value;
+      // const systemInstruction = document.getElementById('system-instruction').value;
       
       // Update configuration
       API_CONFIG.API_KEY = apiKey;
-      API_CONFIG.systemInstruction = systemInstruction;
+      // API_CONFIG.systemInstruction = systemInstruction;
       
       // Save to local storage
       saveApiConfig(API_CONFIG);

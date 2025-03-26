@@ -46,7 +46,7 @@ class GeminiService {
   }
 
   // Process content with Gemini API
-  async processContent(textInput = '', files = [], userInstruction = '') {
+  async processContent(textInput = '', files = []) {
     if (!this.config.API_KEY) {
       throw new Error('API key is not configured');
     }
@@ -96,7 +96,7 @@ class GeminiService {
     }
 
     // Add the text input
-    const finalPrompt = userInstruction || textInput || "Please extract event details from the provided content and format them as a calendar event with title, date, time, location, and description.";
+    const finalPrompt = textInput || "Please extract event details from the provided content and format them as a calendar event with title, date, time, location, and description.";
     contents.push({
       role: "user",
       parts: [{
@@ -110,7 +110,7 @@ class GeminiService {
       systemInstruction: {
         role: "user",
         parts: [{
-          text: this.config.systemInstruction
+          text: "Please extract event details from the provided content and format them as a calendar event with title, date, time, location, and description."
         }]
       },
       generationConfig: {
