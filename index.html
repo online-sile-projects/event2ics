@@ -58,11 +58,26 @@
         import { EventProcessor } from './js/services/EventProcessor.js';
         import { ContentDisplay } from './js/services/ContentDisplay.js';
         import { ContentEditor } from './js/services/ContentEditor.js';
+        import GeminiService from './js/services/GeminiService.js';
 
         document.addEventListener('DOMContentLoaded', () => {
             const eventProcessor = new EventProcessor();
             const contentDisplay = new ContentDisplay();
             const contentEditor = new ContentEditor();
+            const geminiService = new GeminiService();
+
+            // 從 localStorage 讀取並設置已保存的 API key
+            const savedApiKey = localStorage.getItem('gemini_api_key');
+            if (savedApiKey) {
+                document.getElementById('gemini-api-key').value = savedApiKey;
+            }
+
+            // 監聽 API key 保存按鈕
+            document.getElementById('save-api-key').addEventListener('click', () => {
+                const apiKey = document.getElementById('gemini-api-key').value;
+                geminiService.setApiKey(apiKey);
+                alert('API Key 已成功儲存！');
+            });
 
             // 監聽編輯後的內容變更
             window.addEventListener('content-edited', (event) => {

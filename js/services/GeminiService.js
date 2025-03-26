@@ -1,7 +1,12 @@
 class GeminiService {
     constructor() {
-        this.API_KEY = "YOUR_API_KEY"; // 這裡的 API_KEY 可以從主頁修改
+        this.API_KEY = localStorage.getItem('gemini_api_key') || ''; // 從 localStorage 讀取 API key
         this.API_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+    }
+
+    setApiKey(apiKey) {
+        this.API_KEY = apiKey;
+        localStorage.setItem('gemini_api_key', apiKey);
     }
 
     async convertToICS(inputText) {
