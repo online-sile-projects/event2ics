@@ -9,8 +9,20 @@ export async function getBase64FromUrl(url) {
     });
 }
 
+export function getApiKey() {
+    return localStorage.getItem('gemini-api-key');
+}
+
+export function setApiKey(key) {
+    localStorage.setItem('gemini-api-key', key);
+}
+
 export async function callGeminiAPI(prompt) {
-    const API_KEY = 'AIzaSyC-ruOMRJYCave2Mo4I2wLzfu-Ap6CF4O0';
+    const API_KEY = getApiKey();
+    if (!API_KEY) {
+        throw new Error('請先設定 API Key');
+    }
+    
     let fileUri = null;
 
     if (prompt.image) {

@@ -1,6 +1,24 @@
 import { handleSharedContent, handlePasteEvent, sharedContent } from './share-handler.js';
-import { getBase64FromUrl, callGeminiAPI } from './api-service.js';
+import { getBase64FromUrl, callGeminiAPI, getApiKey, setApiKey } from './api-service.js';
 import { downloadICS } from './ics-generator.js';
+
+// 初始化 API key 輸入欄位
+const apiKeyInput = document.getElementById('api-key');
+const savedApiKey = getApiKey();
+if (savedApiKey) {
+    apiKeyInput.value = savedApiKey;
+}
+
+// 處理 API key 儲存
+document.getElementById('save-api-key').addEventListener('click', () => {
+    const apiKey = apiKeyInput.value.trim();
+    if (apiKey) {
+        setApiKey(apiKey);
+        alert('API Key 已儲存');
+    } else {
+        alert('請輸入有效的 API Key');
+    }
+});
 
 // 監聽來自 Service Worker 的訊息
 navigator.serviceWorker.addEventListener('message', event => {
