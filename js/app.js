@@ -1,5 +1,5 @@
 import { handleSharedContent, handlePasteEvent, sharedContent } from './share-handler.js';
-import { getBase64FromUrl, callGeminiAPI } from './api-service.js';
+import { getBase64FromUrl, callGeminiAPI, setApiKey } from './api-service.js';
 import { downloadICS } from './ics-generator.js';
 
 // 監聽來自 Service Worker 的訊息
@@ -11,6 +11,17 @@ navigator.serviceWorker.addEventListener('message', event => {
 
 // 處理剪貼簿貼上事件
 document.addEventListener('paste', handlePasteEvent);
+
+// 處理儲存 API Key
+document.getElementById('save-api-key').addEventListener('click', () => {
+    const apiKey = document.getElementById('api-key').value.trim();
+    if (apiKey) {
+        setApiKey(apiKey);
+        alert('API Key 已儲存');
+    } else {
+        alert('請輸入 API Key');
+    }
+});
 
 // 轉換成 ICS 檔案
 document.getElementById('convert-to-ics').addEventListener('click', async () => {
