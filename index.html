@@ -21,11 +21,22 @@
     <div id="app">
         <header>
             <h1>訊息分享顯示器</h1>
-            <p>從其他應用程式分享內容到這裡</p>
+            <p>從其他應用程式分享內容到這裡?</p>
         </header>
         <main>
+            <div id="api-key-section">
+                <h2>設定</h2>
+                <div class="input-group">
+                    <label for="gemini-api-key">Gemini API Key:</label>
+                    <input type="password" id="gemini-api-key" placeholder="請輸入您的 Gemini API Key">
+                    <button id="save-api-key" class="button">儲存 API Key</button>
+                </div>
+            </div>
             <div id="content-display"></div>
             <div id="content-editor"></div>
+            <div id="action-buttons">
+                <button id="process-content" class="button">轉換成行事曆</button>
+            </div>
         </main>
     </div>
 

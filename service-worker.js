@@ -7,6 +7,7 @@ const urlsToCache = [
   '/js/services/ContentDisplay.js',
   '/js/services/ContentEditor.js'
 ];
+const isDevelopment = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 
 // 安裝 Service Worker
 self.addEventListener('install', (event) => {
@@ -20,6 +21,12 @@ self.addEventListener('install', (event) => {
 
 // 處理離線緩存
 self.addEventListener('fetch', (event) => {
+  // 在開發模式下，直接獲取新的資源，不使用快取
+  if (isDevelopment) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+  
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
