@@ -83,6 +83,26 @@
             window.addEventListener('content-edited', (event) => {
                 contentDisplay.displayContent(event.detail);
             });
+
+            // 監聽轉換按鈕點擊事件
+            document.getElementById('process-content').addEventListener('click', async () => {
+                const textContent = document.querySelector('.editor-textarea').value;
+                if (!textContent) {
+                    alert('請先輸入或分享要轉換的內容！');
+                    return;
+                }
+
+                try {
+                    const result = await eventProcessor.processAndDownload(textContent);
+                    if (result.success) {
+                        alert(result.message);
+                    } else {
+                        alert(result.message);
+                    }
+                } catch (error) {
+                    alert('轉換過程發生錯誤，請確認您已設定 API Key 且輸入內容正確。');
+                }
+            });
         });
     </script>
 </body>
