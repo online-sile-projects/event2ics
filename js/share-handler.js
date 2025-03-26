@@ -19,6 +19,22 @@ export function handleSharedContent(content) {
 export async function handlePasteEvent(e) {
     e.preventDefault();
     const items = e.clipboardData.items;
+    const apiKeyInput = document.getElementById('api-key');
+    
+    // 如果焦點在 apiKeyInput 上，直接貼到 apiKeyInput
+    if (document.activeElement === apiKeyInput) {
+        for (const item of items) {
+            if (item.type === 'text/plain') {
+                item.getAsString(text => {
+                    apiKeyInput.value = text;
+                });
+                return;
+            }
+        }
+        return;
+    }
+
+    // 其他情況的處理
     for (const item of items) {
         if (item.type.indexOf('image') !== -1) {
             const blob = item.getAsFile();
