@@ -1,131 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>event2ics - Event to Calendar Converter</title>
-    
-    <!-- PWA Meta Tags -->
-    <meta name="description" content="Transform clipboard content into calendar events using AI">
-    <meta name="theme-color" content="#4285f4">
+    <title>Event2ICS - 訊息轉行事曆</title>
     <link rel="manifest" href="manifest.json">
-    
-    <!-- Favicon and Icons -->
-    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+    <!-- PWA 相關 icon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="images/icons_favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/icons_favicon-16x16.png">
     <link rel="apple-touch-icon" href="images/icons_apple-touch-icon.png">
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="styles/main.css">
-    
-    <!-- Preconnect to API domain -->
-    <link rel="preconnect" href="https://generativelanguage.googleapis.com">
 </head>
 <body>
     <header>
-        <img src="images/img_icon-192.png" alt="event2ics logo" class="logo">
-        <h1>event2ics</h1>
-        <p>Transform messages or images into calendar events using AI</p>
+        <h1>訊息轉行事曆</h1>
+        <p class="subtitle">將文字或圖片轉換成行事曆事件</p>
     </header>
 
-    <!-- Error/Success Messages -->
-    <div id="error-message"></div>
-    <div id="success-message"></div>
-    
-    <!-- Content Input Section -->
-    <section>
-        <div class="card">
-            <h2>Input</h2>
-            <div class="button-container">
-                <button id="paste-button">Paste from Clipboard</button>
-                <input type="file" id="file-input" accept="image/*,text/plain" style="display: none;">
-                <button class="secondary" onclick="document.getElementById('file-input').click()">Upload File</button>
-                <button id="api-settings-button" class="secondary">API Settings</button>
-            </div>
-            
-            <div id="clipboard-text"></div>
-            <div id="clipboard-image"></div>
-            
-            <div class="button-container">
-                <button id="process-button">Process with AI</button>
-                <button id="clear-button" class="secondary">Clear</button>
+    <main>
+        <div id="instructions" class="center-container">
+            <div class="instruction-box">
+                <h2>使用方式</h2>
+                <ol>
+                    <li>複製想要轉換的文字或圖片</li>
+                    <li>使用分享功能分享到本應用</li>
+                    <li>點擊轉換按鈕</li>
+                    <li>下載或直接加入行事曆</li>
+                </ol>
             </div>
         </div>
-    </section>
-    
-    <!-- AI Processing Results -->
-    <section id="api-response-container" class="content-section">
-        <div class="card">
-            <h2>AI Analysis</h2>
-            <div id="api-response"></div>
-        </div>
-    </section>
-    
-    <!-- Event Form -->
-    <section id="event-form-container" class="content-section">
-        <div class="card">
-            <h2>Calendar Event</h2>
-            <form id="event-form">
-                <div class="form-group">
-                    <label for="event-title">Event Title</label>
-                    <input type="text" id="event-title" required>
-                </div>
-                
-                <div class="two-columns">
-                    <div class="form-group">
-                        <label for="event-date">Date</label>
-                        <input type="date" id="event-date">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="event-time">Time</label>
-                        <input type="time" id="event-time">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="event-location">Location</label>
-                    <input type="text" id="event-location">
-                </div>
-                
-                <div class="form-group">
-                    <label for="event-description">Description</label>
-                    <textarea id="event-description"></textarea>
-                </div>
-                
-                <div class="button-container">
-                    <button type="button" id="create-ics-button" class="success">Generate Calendar Event (ICS)</button>
-                </div>
-            </form>
-        </div>
-    </section>
-    
-    <!-- API Settings Modal -->
-    <div id="settings-modal" class="modal">
-        <div class="modal-content">
-            <span id="close-modal" class="close-button">&times;</span>
-            <h2>API Settings</h2>
-            <div class="form-group">
-                <label for="api-key-input">Google Gemini API Key</label>
-                <input type="text" id="api-key-input" placeholder="Enter your API key">
+
+        <div id="content-preview" class="hidden">
+            <div id="shared-content"></div>
+            <div id="event-preview" class="hidden">
+                <h3>事件預覽</h3>
+                <div id="event-details"></div>
             </div>
-            <button id="save-api-settings">Save Settings</button>
         </div>
-    </div>
-    
-    <!-- Loading Spinner -->
-    <div id="loading">
-        <div class="spinner"></div>
-    </div>
-    
+    </main>
+
     <footer>
-        <p>event2ics PWA - Convert clipboard content into calendar events with AI</p>
+        <div class="button-container">
+            <button id="convert-btn" class="primary-btn">轉換</button>
+            <button id="download-btn" class="secondary-btn hidden">下載 ICS</button>
+            <button id="add-calendar-btn" class="secondary-btn hidden">加入行事曆</button>
+        </div>
     </footer>
-    
-    <!-- Scripts -->
-    <script src="config/api-config.js"></script>
-    <script src="scripts/clipboard-handler.js"></script>
-    <script src="scripts/gemini-service.js"></script>
-    <script src="scripts/ics-generator.js"></script>
-    <script src="scripts/app.js"></script>
+
+    <script src="app.js" type="module"></script>
 </body>
 </html>
