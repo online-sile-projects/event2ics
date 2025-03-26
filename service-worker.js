@@ -1,76 +1,80 @@
-const CACHE_NAME = 'event2ics-v1';
-const ASSETS_TO_CACHE = [
-    '/',
-    '/index.html',
-    '/src/app.js',
-    '/manifest.json',
-    'https://unpkg.com/alpinejs',
-    'https://cdn.tailwindcss.com'
+const CACHE_NAME = 'message-display-v1';
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/css/styles.css',
+  '/js/services/EventProcessor.js',
+  '/js/services/ContentDisplay.js',
+  '/js/services/ContentEditor.js'
 ];
 
 // 安裝 Service Worker
 self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => cache.addAll(ASSETS_TO_CACHE))
-    );
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        return cache.addAll(urlsToCache);
+      })
+  );
 });
 
-// 啟動 Service Worker
-self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames
-                    .filter((name) => name !== CACHE_NAME)
-                    .map((name) => caches.delete(name))
-            );
-        })
-    );
-});
-
-// 處理資源請求
+// 處理離線緩存
 self.addEventListener('fetch', (event) => {
-    // 處理分享目標
-    if (event.request.method === 'POST') {
-        event.respondWith(Response.redirect('/?share=true'));
-        event.waitUntil(
-            (async function() {
-                const data = await event.request.formData();
-                const client = await self.clients.get(event.resultingClientId);
+  event.respondWith(
+    caches.match(event.request)
+      .then((response) => {
+        if (response) {
+          return response;
+        }
+        return fetch(event.request);
+      })
+  );
+});
 
-                const files = data.getAll('image');
-                const text = data.get('text');
+// 處理分享事件
+self.addEventListener('share-target', async (event) => {
+  const formData = await event.request.formData();
+  const data = {};
 
-                if (text) {
-                    client.postMessage({ type: 'SHARED_TEXT', text });
-                }
-
-                if (files.length > 0) {
-                    for (const file of files) {
-                        const reader = new FileReader();
-                        reader.onload = () => {
-                            client.postMessage({
-                                type: 'SHARED_IMAGE',
-                                data: reader.result
-                            });
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                }
-            })()
-        );
-        return;
+  if (formData.has('text')) {
+    data.type = 'text';
+    data.data = formData.get('text');
+  } else if (formData.has('files')) {
+    const file = formData.get('files');
+    if (file && file.type.startsWith('image/')) {
+      data.type = 'image';
+      data.data = URL.createObjectURL(file);
     }
+  }
 
-    // 處理一般資源請求
-    event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                if (response) {
-                    return response;
-                }
-                return fetch(event.request);
-            })
-    );
+  // 發送消息給頁面
+  const clients = await self.clients.matchAll({
+    includeUncontrolled: true,
+    type: 'window',
+  });
+
+  clients.forEach(client => {
+    client.postMessage({
+      type: 'share-target',
+      content: data
+    });
+  });
+
+  // 重定向到主頁面
+  return Response.redirect('/', 303);
+});
+
+// 清理舊的緩存
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
 });

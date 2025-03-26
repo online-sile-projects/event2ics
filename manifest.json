@@ -1,40 +1,37 @@
 {
-    "name": "Event2ICS",
-    "short_name": "Event2ICS",
-    "description": "將文字訊息或圖片轉換成日曆檔案的 PWA 應用程式",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#3B82F6",
-    "icons": [
-        {
-            "src": "images/icons_favicon-16x16.png",
-            "sizes": "16x16",
-            "type": "image/png"
-        },
-        {
-            "src": "images/icons_favicon-32x32.png",
-            "sizes": "32x32",
-            "type": "image/png"
-        },
-        {
-            "src": "images/img_icon-192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        }
-    ],
-    "share_target": {
-        "action": "/",
-        "method": "POST",
-        "enctype": "multipart/form-data",
-        "params": {
-            "files": [
-                {
-                    "name": "image",
-                    "accept": ["image/*"]
-                }
-            ],
-            "text": "text"
-        }
+  "name": "訊息分享顯示器",
+  "short_name": "訊息顯示",
+  "description": "接收分享的訊息與圖片並顯示",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "images/img_icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons_apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
     }
+  ],
+  "share_target": {
+    "action": "/",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "files",
+          "accept": ["image/*"]
+        }
+      ]
+    }
+  }
 }
