@@ -1,6 +1,6 @@
 import { handleSharedContent, handlePasteEvent, sharedContent } from './share-handler.js';
 import { getBase64FromUrl, callGeminiAPI } from './api-service.js';
-import { generateICS, downloadICS } from './ics-generator.js';
+import { downloadICS } from './ics-generator.js';
 
 // 監聽來自 Service Worker 的訊息
 navigator.serviceWorker.addEventListener('message', event => {
@@ -33,8 +33,7 @@ document.getElementById('convert-to-ics').addEventListener('click', async () => 
             };
         }
 
-        const eventInfo = await callGeminiAPI(prompt);
-        const icsContent = generateICS(eventInfo);
+        const icsContent = await callGeminiAPI(prompt);
         downloadICS(icsContent);
     } catch (error) {
         console.error('轉換失敗:', error);

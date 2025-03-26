@@ -42,14 +42,10 @@ export async function callGeminiAPI(prompt) {
                 role: "user",
                 parts: [
                     {
-                        text: "我需要你幫我從以下內容擷取事件資訊，並以下列 JSON 格式回覆：\n" +
-                              "{\n" +
-                              "  title: '事件標題',\n" +
-                              "  startDate: 'YYYYMMDDTHHMMSS',\n" +
-                              "  endDate: 'YYYYMMDDTHHMMSS',\n" +
-                              "  location: '地點',\n" +
-                              "  description: '描述'\n" +
-                              "}\n\n" +
+                        text: "我需要你幫我從以下內容擷取事件資訊，並直接產生 ICS 格式的日曆檔案內容。請注意以下規則：\n" +
+                              "1. 開始和結束時間格式必須是 YYYYMMDDTHHMMSS\n" +
+                              "2. 回傳的內容必須包含完整的 ICS 格式，從 BEGIN:VCALENDAR 到 END:VCALENDAR\n" +
+                              "3. 請確保所有特殊字符都經過正確轉義\n\n" +
                               "內容如下：\n" + prompt.text
                     }
                 ]
@@ -59,7 +55,7 @@ export async function callGeminiAPI(prompt) {
             role: "user",
             parts: [
                 {
-                    text: "你是一個專門協助解析事件資訊的助手。請用繁體中文回覆。"
+                    text: "你是一個專門協助解析事件資訊並產生 ICS 格式日曆檔案的助手。請用繁體中文回覆。"
                 }
             ]
         },
@@ -101,10 +97,11 @@ export async function callGeminiAPI(prompt) {
 
 function parseGeminiResponse(response) {
     try {
-        
         const text = response.candidates[0].content.parts[0].text;
-        console.log('解析的內容:', text);
-        return JSON.parse(text);
+        // 移除可能的程式碼區塊標記
+        const cleanedText = text.replace(/```ics\n?|\n?```/g, '').trim();
+        console.log('產生的 ICS 內容:', cleanedText);
+        return cleanedText;
     } catch (error) {
         console.error('解析回應失敗:', error);
         throw new Error('無法解析API回應');
