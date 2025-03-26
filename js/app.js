@@ -1,6 +1,14 @@
 import { handleSharedContent, handlePasteEvent, sharedContent } from './share-handler.js';
-import { getBase64FromUrl, callGeminiAPI, setApiKey } from './api-service.js';
+import { getBase64FromUrl, callGeminiAPI, setApiKey, getApiKey } from './api-service.js';
 import { downloadICS } from './ics-generator.js';
+
+// 載入已儲存的 API Key
+document.addEventListener('DOMContentLoaded', () => {
+    const savedApiKey = getApiKey();
+    if (savedApiKey) {
+        document.getElementById('api-key').value = savedApiKey;
+    }
+});
 
 // 監聽來自 Service Worker 的訊息
 navigator.serviceWorker.addEventListener('message', event => {
@@ -25,12 +33,17 @@ document.getElementById('save-api-key').addEventListener('click', () => {
 
 // 轉換成 ICS 檔案
 document.getElementById('convert-to-ics').addEventListener('click', async () => {
+    const convertButton = document.getElementById('convert-to-ics');
+    
     if (!sharedContent) {
         alert('請先分享或貼上內容');
         return;
     }
 
     try {
+        convertButton.classList.add('loading');
+        convertButton.disabled = true;
+
         let prompt;
         if (sharedContent.type === 'image') {
             const imageBase64 = await getBase64FromUrl(sharedContent.data);
@@ -49,5 +62,8 @@ document.getElementById('convert-to-ics').addEventListener('click', async () => 
     } catch (error) {
         console.error('轉換失敗:', error);
         alert('轉換失敗，請稍後再試');
+    } finally {
+        convertButton.classList.remove('loading');
+        convertButton.disabled = false;
     }
 });
