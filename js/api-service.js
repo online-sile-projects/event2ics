@@ -101,7 +101,9 @@ export async function callGeminiAPI(prompt) {
 
 function parseGeminiResponse(response) {
     try {
+        
         const text = response.candidates[0].content.parts[0].text;
+        console.log('解析的內容:', text);
         return JSON.parse(text);
     } catch (error) {
         console.error('解析回應失敗:', error);
