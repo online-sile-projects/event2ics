@@ -1,0 +1,3 @@
+User-agent: *
+Sitemap: https://event2ics.com/articles/sitemap.xml
+Sitemap: https://event2ics.com/sitemap.xml
