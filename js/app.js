@@ -54,9 +54,10 @@ document.getElementById('save-api-key').addEventListener('click', () => {
 // 轉換成 ICS 檔案
 document.getElementById('convert-to-ics').addEventListener('click', async () => {
     const convertButton = document.getElementById('convert-to-ics');
+    const manualInput = document.getElementById('manual-input').value.trim();
     
-    if (!sharedContent) {
-        alert('請先分享或貼上內容');
+    if (!sharedContent && !manualInput) {
+        alert('請先分享內容或輸入文字');
         return;
     }
 
@@ -65,7 +66,11 @@ document.getElementById('convert-to-ics').addEventListener('click', async () => 
         convertButton.disabled = true;
 
         let prompt;
-        if (sharedContent.type === 'image') {
+        if (manualInput) {
+            prompt = {
+                text: `請從以下文字中擷取事件相關資訊，包含事件名稱、日期、時間和地點，並整理成行事曆格式：\n${manualInput}`
+            };
+        } else if (sharedContent.type === 'image') {
             const imageBase64 = await getBase64FromUrl(sharedContent.data);
             prompt = {
                 image: imageBase64,
