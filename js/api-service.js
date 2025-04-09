@@ -67,7 +67,7 @@ export async function callGeminiAPI(prompt) {
             role: "user",
             parts: [
                 {
-                    text: "你是一個專門協助解析事件資訊並產生 ICS 格式日曆檔案的助手。請用繁體中文回覆。"
+                    text: "你是一個專門協助解析事件資訊並產生 ICS 格式日曆檔案的助手。"
                 }
             ]
         },
@@ -110,10 +110,23 @@ export async function callGeminiAPI(prompt) {
 function parseGeminiResponse(response) {
     try {
         const text = response.candidates[0].content.parts[0].text;
-        // 移除可能的程式碼區塊標記
-        const cleanedText = text.replace(/```ics\n?|\n?```/g, '').trim();
-        console.log('產生的 ICS 內容:', cleanedText);
-        return cleanedText;
+        // 使用正則表達式擷取所有 VEVENT 區塊
+        const events = text.matchAll(/BEGIN:VEVENT[\s\S]*?END:VEVENT/g);
+        const eventBlocks = Array.from(events);
+        
+        if (!eventBlocks.length) {
+            throw new Error('找不到有效的事件內容');
+        }
+
+        // 組合多個活動成一個 VCALENDAR
+        const combinedICS = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//event2ics//NONSGML v1.0//EN
+${eventBlocks.join('\n')}
+END:VCALENDAR`;
+
+        console.log('產生的 ICS 內容:', combinedICS);
+        return combinedICS;
     } catch (error) {
         console.error('解析回應失敗:', error);
         throw new Error('無法解析API回應');
