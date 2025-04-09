@@ -132,3 +132,18 @@ body {
 .secondary-button:hover {
     background-color: #5a6268;
 }
+
+.editable-content {
+    min-height: 200px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.editable-content:focus {
+    outline: none;
+    border-color: #666;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
