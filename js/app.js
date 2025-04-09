@@ -2,12 +2,32 @@ import { handleSharedContent, handlePasteEvent, sharedContent } from './share-ha
 import { getBase64FromUrl, callGeminiAPI, setApiKey, getApiKey } from './api-service.js';
 import { downloadICS } from './ics-generator.js';
 
-// 載入已儲存的 API Key
+// 設定收合控制
+function setupSettingsToggle() {
+    const toggleButton = document.querySelector('.toggle-settings');
+    const settingsContainer = document.querySelector('.settings-container');
+    const toggleText = document.querySelector('.toggle-text');
+    const savedApiKey = getApiKey();
+
+    // 如果已經有存儲的 API Key，預設收起設定
+    if (savedApiKey) {
+        settingsContainer.classList.add('collapsed');
+        toggleText.textContent = '顯示設定';
+    }
+
+    toggleButton.addEventListener('click', () => {
+        settingsContainer.classList.toggle('collapsed');
+        toggleText.textContent = settingsContainer.classList.contains('collapsed') ? '顯示設定' : '隱藏設定';
+    });
+}
+
+// 載入已儲存的 API Key 並設定收合控制
 document.addEventListener('DOMContentLoaded', () => {
     const savedApiKey = getApiKey();
     if (savedApiKey) {
         document.getElementById('api-key').value = savedApiKey;
     }
+    setupSettingsToggle();
 });
 
 // 監聽來自 Service Worker 的訊息

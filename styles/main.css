@@ -84,6 +84,30 @@ body {
     display: flex;
     gap: 10px;
     align-items: center;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    max-height: 50px;
+}
+
+.settings-container.collapsed {
+    max-height: 0;
+    margin-bottom: 0;
+}
+
+.toggle-settings {
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.toggle-settings:hover {
+    color: #5a6268;
 }
 
 .api-key-input {
@@ -107,4 +131,19 @@ body {
 
 .secondary-button:hover {
     background-color: #5a6268;
+}
+
+.editable-content {
+    min-height: 200px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.editable-content:focus {
+    outline: none;
+    border-color: #666;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
