@@ -2,13 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://event2ics.com/articles/index.html</loc>
-        <lastmod>2025-05-22</lastmod>
+        <lastmod>2025-05-23</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
+        <loc>https://event2ics.com/articles/2025-05-23-01-40-04-從搜尋結果分析近期台灣新聞與資訊.html</loc>
+        <lastmod>2025-05-23-01-40-04</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://event2ics.com/articles/2025-05-22-01-39-58-近期網路資訊摘要分析：股票、教育、旅遊與生活資訊.html</loc>
-        <lastmod>2025-05-22-01-39-58</lastmod>
+        <lastmod>2025-05-22-01-39</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
