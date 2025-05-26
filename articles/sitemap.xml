@@ -2,13 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://event2ics.com/articles/index.html</loc>
-        <lastmod>2025-05-25</lastmod>
+        <lastmod>2025-05-26</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
+        <loc>https://event2ics.com/articles/2025-05-26-01-43-13-2025-美股投資前瞻：行事曆、休市日與市場動態解析.html</loc>
+        <lastmod>2025-05-26-01-43-13</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://event2ics.com/articles/2025-05-25-01-47-38-行事曆相關資訊整合分析.html</loc>
-        <lastmod>2025-05-25-01-47-38</lastmod>
+        <lastmod>2025-05-25-01-47</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
