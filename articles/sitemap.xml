@@ -2,13 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://event2ics.com/articles/index.html</loc>
-        <lastmod>2025-06-01</lastmod>
+        <lastmod>2025-06-02</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
+        <loc>https://event2ics.com/articles/2025-06-02-01-45-40-近期新聞摘要與分析.html</loc>
+        <lastmod>2025-06-02-01-45-40</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://event2ics.com/articles/2025-06-01-01-57-08-近期新聞資訊整理.html</loc>
-        <lastmod>2025-06-01-01-57-08</lastmod>
+        <lastmod>2025-06-01-01-57</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
